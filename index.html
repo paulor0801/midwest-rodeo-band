@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Midwest Rodeo Band</title>
+  <meta name="description" content="The Midwest Rodeo Band — country e rock direto de Brasília.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rye&family=Oswald:wght@400;600&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --couro: #1a110b;      /* fundo principal */
+      --madeira: #2a1b12;    /* fundo dos cartões */
+      --ouro: #d9a443;       /* destaque */
+      --ferrugem: #b5452b;   /* segundo destaque */
+      --creme: #f3e6d0;      /* texto */
+      --poeira: #a8957a;     /* texto apagado */
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--couro);
+      color: var(--creme);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+    img { display: block; max-width: 100%; }
+
+    /* ---------- Menu ---------- */
+    nav {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 26px;
+      padding: 14px 16px;
+      background: rgba(20, 13, 8, 0.92);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(217, 164, 67, 0.25);
+    }
+    nav a {
+      color: var(--creme); text-decoration: none;
+      font-family: 'Oswald', sans-serif; text-transform: uppercase;
+      letter-spacing: 2px; font-size: 14px;
+    }
+    nav a:hover { color: var(--ouro); }
+
+    /* ---------- Capa ---------- */
+    .capa {
+      position: relative;
+      min-height: 88vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; padding: 60px 16px;
+      background:
+        linear-gradient(180deg, rgba(26,17,11,0.55) 0%, rgba(26,17,11,0.75) 60%, var(--couro) 100%),
+        url('fotos/banda-palco.webp') center 30% / cover no-repeat;
+    }
+    .capa .the {
+      font-family: 'Oswald', sans-serif; letter-spacing: 8px;
+      text-transform: uppercase; color: var(--ouro); font-size: 18px; margin: 0;
+    }
+    .capa h1 {
+      font-family: 'Rye', serif; font-weight: 400;
+      font-size: clamp(42px, 9vw, 104px); line-height: 1.05;
+      margin: 8px 0 14px; color: var(--creme);
+      text-shadow: 0 4px 18px rgba(0,0,0,0.7);
+    }
+    .capa .local {
+      font-family: 'Oswald', sans-serif; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--creme); margin: 0 0 32px;
+    }
+    .capa .local span { color: var(--ferrugem); margin: 0 10px; }
+
+    /* ---------- Botões ---------- */
+    .botao {
+      display: inline-block;
+      padding: 13px 28px;
+      background: var(--ouro); color: var(--couro);
+      font-family: 'Oswald', sans-serif; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 2px; text-decoration: none;
+      border-radius: 4px;
+      transition: transform .15s, background .15s;
+    }
+    .botao:hover { background: #e8b95c; transform: translateY(-2px); }
+
+    /* ---------- Seções ---------- */
+    section { max-width: 1100px; margin: 0 auto; padding: 80px 16px; }
+    h2 {
+      font-family: 'Rye', serif; font-weight: 400;
+      font-size: clamp(30px, 5vw, 44px);
+      text-align: center; margin: 0 0 12px; color: var(--ouro);
+    }
+    .estrela {
+      text-align: center; color: var(--ferrugem);
+      letter-spacing: 10px; margin: 0 0 40px;
+    }
+
+    /* ---------- Sobre ---------- */
+    .sobre {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    }
+    .sobre img { border-radius: 6px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .sobre p { margin: 0 0 18px; }
+    .sobre p:first-of-type::first-letter {
+      font-family: 'Rye', serif; float: left;
+      font-size: 64px; line-height: 0.9; margin: 6px 10px 0 0; color: var(--ouro);
+    }
+
+    /* ---------- Integrantes ---------- */
+    .integrantes {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px;
+    }
+    .membro {
+      background: var(--madeira); border-radius: 6px; overflow: hidden;
+      border: 1px solid rgba(217,164,67,0.15);
+      transition: transform .2s, border-color .2s;
+    }
+    .membro:hover { transform: translateY(-4px); border-color: var(--ouro); }
+    .membro img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+    .membro div { padding: 14px 12px 18px; text-align: center; }
+    .membro h3 {
+      font-family: 'Oswald', sans-serif; font-weight: 600;
+      font-size: 18px; margin: 0; letter-spacing: 1px;
+    }
+    .membro p {
+      margin: 2px 0 0; color: var(--ouro);
+      font-family: 'Oswald', sans-serif; text-transform: uppercase;
+      font-size: 13px; letter-spacing: 2px;
+    }
+
+    /* ---------- Galeria ---------- */
+    .galeria {
+      display: grid; grid-template-columns: 2fr 1fr; gap: 14px;
+    }
+    .galeria img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+    .galeria .alta { grid-row: span 2; }
+
+    /* ---------- Shows ---------- */
+    .agenda {
+      max-width: 640px; margin: 0 auto; text-align: center;
+      background: var(--madeira); border: 1px dashed var(--ouro);
+      border-radius: 6px; padding: 40px 24px;
+    }
+    .agenda p { margin: 0 0 24px; color: var(--poeira); }
+
+    /* ---------- Contato ---------- */
+    .contato { text-align: center; }
+    .contato p { color: var(--poeira); margin: 0 0 28px; }
+
+    footer {
+      text-align: center; padding: 30px 16px 40px;
+      color: var(--poeira); font-size: 14px;
+      border-top: 1px solid rgba(217,164,67,0.15);
+    }
+
+    /* ---------- Celular ---------- */
+    @media (max-width: 900px) {
+      .integrantes { grid-template-columns: repeat(2, 1fr); }
+      .integrantes .membro:last-child { grid-column: span 2; max-width: 50%; margin: 0 auto; }
+    }
+    @media (max-width: 700px) {
+      section { padding: 56px 16px; }
+      .sobre { grid-template-columns: 1fr; gap: 28px; }
+      .galeria { grid-template-columns: 1fr; }
+      .galeria .alta { grid-row: auto; }
+      nav { gap: 4px 16px; }
+      nav a { font-size: 12px; letter-spacing: 1px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#sobre">Sobre</a>
+    <a href="#banda">A Banda</a>
+    <a href="#fotos">Fotos</a>
+    <a href="#shows">Shows</a>
+    <a href="#contato">Contato</a>
+  </nav>
+
+  <!-- CAPA -->
+  <header class="capa">
+    <p class="the">The</p>
+    <h1>Midwest<br>Rodeo Band</h1>
+    <p class="local">Country <span>★</span> Rock <span>★</span> Brasília</p>
+    <a class="botao" href="https://www.instagram.com/midwest_rodeo_band/" target="_blank" rel="noopener">Siga no Instagram</a>
+  </header>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <h2>Sobre</h2>
+    <p class="estrela">★ ★ ★</p>
+    <div class="sobre">
+      <img src="fotos/show-logo.webp" alt="Michael no violino e Johnny Colorado no vocal">
+      <div>
+        <p>Chapéu na cabeça, botas no palco e muito som de estrada. A Midwest Rodeo Band leva o espírito do country e do rock para as noites de Brasília.</p>
+        <p>Violino, guitarra, baixo e bateria se juntam a uma voz marcante em um repertório feito para cantar junto, dançar e erguer o copo.</p>
+        <p><em>Troque este texto pela história de vocês: como a banda começou, as influências e o que o público pode esperar de um show.</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRANTES -->
+  <section id="banda">
+    <h2>A Banda</h2>
+    <p class="estrela">★ ★ ★</p>
+    <div class="integrantes">
+      <div class="membro">
+        <img src="fotos/johnny.webp" alt="Johnny Colorado">
+        <div><h3>Johnny Colorado</h3><p>Vocal</p></div>
+      </div>
+      <div class="membro">
+        <img src="fotos/paulo.webp" alt="Paulo Leão">
+        <div><h3>Paulo Leão</h3><p>Guitarra</p></div>
+      </div>
+      <div class="membro">
+        <img src="fotos/michael.webp" alt="Michael">
+        <div><h3>Michael</h3><p>Violino</p></div>
+      </div>
+      <div class="membro">
+        <img src="fotos/bob.webp" alt="Bob">
+        <div><h3>Bob</h3><p>Baixo</p></div>
+      </div>
+      <div class="membro">
+        <img src="fotos/sergio.webp" alt="Sérgio Agnes">
+        <div><h3>Sérgio Agnes</h3><p>Bateria</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOTOS -->
+  <section id="fotos">
+    <h2>No Palco</h2>
+    <p class="estrela">★ ★ ★</p>
+    <div class="galeria">
+      <img class="alta" src="fotos/banda-palco.webp" alt="A banda no palco com o público ao fundo">
+      <img src="fotos/violino-guitarra.png" alt="Violino e guitarra no palco">
+      <img src="fotos/show-logo.webp" alt="Show da Midwest Rodeo Band">
+    </div>
+  </section>
+
+  <!-- SHOWS -->
+  <section id="shows">
+    <h2>Próximos Shows</h2>
+    <p class="estrela">★ ★ ★</p>
+    <div class="agenda">
+      <p>A agenda sai primeiro no nosso Instagram. Siga para não perder o próximo rodeio!</p>
+      <a class="botao" href="https://www.instagram.com/midwest_rodeo_band/" target="_blank" rel="noopener">Ver agenda</a>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="contato">
+    <h2>Contrate a Banda</h2>
+    <p class="estrela">★ ★ ★</p>
+    <p>Bares, festas, eventos e casamentos. Chama a gente no Instagram.</p>
+    <a class="botao" href="https://www.instagram.com/midwest_rodeo_band/" target="_blank" rel="noopener">@midwest_rodeo_band</a>
+  </section>
+
+  <footer>© 2026 The Midwest Rodeo Band · Brasília</footer>
+
+</body>
+</html>
