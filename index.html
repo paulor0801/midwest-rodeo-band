@@ -49,7 +49,10 @@
       padding: 14px 32px; transition: background .3s, padding .3s;
     }
     .menu.rolou { background: rgba(14,14,14,.95); padding: 8px 32px; box-shadow: 0 4px 20px rgba(0,0,0,.4); }
-    .menu .marca { font-family: 'Abril Fatface', serif; font-size: 20px; text-decoration: none; letter-spacing: 1px; }
+    .menu .marca { display: block; line-height: 0; }
+    /* logo-clara.png: a logo em cor creme, com fundo transparente */
+    .menu .marca img { height: 72px; width: auto; transition: height .3s; }
+    .menu.rolou .marca img { height: 50px; }
     .menu nav { display: flex; gap: 26px; }
     .menu nav a {
       font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px;
@@ -78,6 +81,11 @@
       text-shadow: 0 6px 30px rgba(0,0,0,.6);
     }
     .capa h1 span { display: block; color: var(--ouro); }
+    /* Logo grande no lugar do título escrito */
+    .capa .logo-capa img {
+      width: min(560px, 100%); height: auto;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,.7));
+    }
     .capa-foto {
       position: absolute; right: 0; top: 0; bottom: 0; width: 55%;
       background: url('fotos/johnny.webp') center 25% / cover no-repeat;
@@ -204,7 +212,38 @@
     /* =========================================================
        INTEGRANTES
        ========================================================= */
-    .banda { padding: 110px 6vw; }
+    .banda { padding: 110px 6vw; position: relative; overflow: hidden; isolation: isolate; }
+    /* Vídeo de fundo da "A banda": ocupa a seção inteira, sem som, em loop */
+    .banda video {
+      position: absolute; inset: 0; z-index: -2;
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    /* Película escura por cima do vídeo, para os cartões e o título se destacarem */
+    .banda::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      /* em cima e embaixo o vídeo some no escuro, para não fazer "corte" */
+      background: linear-gradient(var(--noite) 0%, rgba(19,19,19,.65) 18%, rgba(19,19,19,.75) 80%, var(--noite) 100%);
+    }
+
+    /* =========================================================
+       JOGUINHO: Chapéu Saltador (o código fica no jogo.js)
+       ========================================================= */
+    .jogo { padding: 60px 6vw 20px; text-align: center; }
+    .jogo h2 { font-size: clamp(34px, 5vw, 52px); margin: 6px 0 8px; }
+    .jogo p { color: var(--cinza); margin: 0 0 26px; }
+    .jogo canvas {
+      display: block; width: 100%; max-width: 900px; aspect-ratio: 600 / 260; margin: 0 auto;
+      border: 3px solid var(--ouro); border-radius: 6px; cursor: pointer;
+      box-shadow: 0 20px 50px rgba(0,0,0,.5);
+      touch-action: manipulation; -webkit-user-select: none; user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Espaço com estrelas entre "A banda" e o contato */
+    .separador {
+      text-align: center; padding: 40px 0; color: var(--ouro);
+      letter-spacing: 14px; font-size: 14px; opacity: .8;
+    }
     .banda h2 { font-size: clamp(38px, 5vw, 60px); margin: 0 0 50px; text-align: center; }
     .integrantes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; max-width: 1200px; margin: 0 auto; }
     .membro { position: relative; overflow: hidden; aspect-ratio: 3 / 4; background: var(--carvao); }
@@ -222,7 +261,7 @@
        ========================================================= */
     .contato {
       text-align: center; padding: 100px 6vw;
-      background: linear-gradient(rgba(19,19,19,.82), rgba(19,19,19,.92)), url('fotos/banda-palco.webp') center / cover;
+      background: linear-gradient(var(--noite) 0%, rgba(19,19,19,.82) 25%, rgba(19,19,19,.92) 100%), url('fotos/banda-palco.webp') center / cover;
     }
     .contato h2 { font-size: clamp(38px, 5vw, 60px); margin: 0 0 12px; }
     .contato p { color: #d9d1c5; margin: 0 0 30px; }
@@ -272,11 +311,12 @@
 
   <!-- ================= MENU ================= -->
   <header class="menu" id="menu">
-    <a class="marca" href="#">MIDWEST RODEO</a>
+    <a class="marca" href="#"><img src="fotos/logo-clara.png" alt="The Midwest Rodeo Band"></a>
     <nav>
       <a href="#historia">História</a>
       <a href="#palco">No Palco</a>
       <a href="#banda">A Banda</a>
+      <a href="#jogo">Jogo</a>
       <a href="#contato">Contato</a>
     </nav>
     <a class="faixa-topo" href="https://www.instagram.com/midwest_rodeo_band/" target="_blank" rel="noopener">Instagram ›</a>
@@ -286,8 +326,7 @@
   <section class="capa">
     <div class="capa-foto" role="img" aria-label="Johnny Colorado no palco"></div>
     <div class="capa-texto">
-      <p class="rotulo the">The</p>
-      <h1 class="titulo">Midwest<span>Rodeo Band</span></h1>
+      <h1 class="logo-capa"><img src="fotos/logo-capa.webp" alt="The Midwest Rodeo Band"></h1>
     </div>
 
     <div class="cartoes">
@@ -301,10 +340,10 @@
         <h3>No palco</h3>
         <p>Chapéu, violino e guitarra: veja como é um show da banda.</p>
       </a>
-      <a class="cartao" href="#contato">
+      <a class="cartao" href="contratar.html">
         <span class="rotulo">Eventos</span>
         <h3>Contrate</h3>
-        <p>Bares, festas, casamentos e eventos. Fale com a gente.</p>
+        <p>Festivais, casamentos, confraternizações e eventos. Fale com a gente.</p>
       </a>
     </div>
   </section>
@@ -345,20 +384,20 @@
         <span class="rotulo">A voz</span>
         <h3>Johnny Colorado na frente do palco</h3>
         <img class="foto-celular" src="fotos/johnny.webp" alt="">
-        <p>Chapéu na cabeça e microfone antigo na mão, Johnny Colorado puxa o coro e transforma o bar num salão de rodeio.</p>
+        <p>Chapéu na cabeça e microfone antigo na mão, Johnny Colorado puxa o coro e transforma qualquer palco num salão de rodeio.</p>
       </article>
 
       <article class="capitulo" data-foto="3">
         <span class="rotulo">Hoje</span>
-        <h3>Casa cheia, copo erguido</h3>
+        <h3>Casa cheia, chapéu no alto</h3>
         <img class="foto-celular" src="fotos/banda-palco.webp" alt="">
-        <p>Hoje a banda leva esse som para bares, festas e eventos, com um repertório feito para cantar junto e dançar.</p>
+        <p>Hoje a banda leva esse som para festivais, casamentos, confraternizações e eventos, com um repertório feito para cantar junto e dançar.</p>
         <p><em>Cite aqui shows marcantes, festivais e lugares onde vocês já tocaram.</em></p>
       </article>
     </div>
 
     <div class="pilha" aria-hidden="true">
-      <img src="fotos/show-logo.webp"       style="--giro:-3deg" alt="">
+      <img src="fotos/show-logo.webp"       style="--giro:-3deg; object-position: 78% center" alt="">
       <img src="fotos/violino-guitarra.png" style="--giro:2.5deg" alt="">
       <img src="fotos/johnny.webp"          style="--giro:-2deg" alt="">
       <img src="fotos/banda-palco.webp"     style="--giro:3deg" alt="">
@@ -382,6 +421,11 @@
 
   <!-- ================= A BANDA ================= -->
   <section class="banda" id="banda">
+    <!-- Vídeo de fundo. Para trocar, coloque outro .mp4 na pasta videos
+         e mude o nome abaixo. O "poster" é a foto que aparece enquanto carrega. -->
+    <video autoplay muted loop playsinline poster="fotos/banda-palco.webp" aria-hidden="true">
+      <source src="videos/show.mp4" type="video/mp4">
+    </video>
     <h2 class="titulo revelar">A banda</h2>
     <div class="integrantes">
       <div class="membro revelar"><img src="fotos/johnny.webp" alt="Johnny Colorado"><div><h3>Johnny Colorado</h3><p class="rotulo">Vocal</p></div></div>
@@ -392,12 +436,22 @@
     </div>
   </section>
 
+  <!-- ================= JOGUINHO ================= -->
+  <section class="jogo" id="jogo">
+    <span class="rotulo">Intervalo do show</span>
+    <h2 class="titulo">Chapéu Saltador</h2>
+    <p>Pule os fardos, barris e bolas de feno e pegue as estrelas. Quanto mais longe, mais rápido!</p>
+    <canvas id="jogo-canvas" aria-label="Jogo Chapéu Saltador: toque ou aperte espaço para pular"></canvas>
+  </section>
+
+  <div class="separador" aria-hidden="true">★ ★ ★</div>
+
   <!-- ================= CONTATO ================= -->
   <section class="contato" id="contato">
     <span class="rotulo">Contrate a banda</span>
     <h2 class="titulo">Bora fazer um rodeio?</h2>
-    <p>Bares, festas, casamentos e eventos em Brasília e região.</p>
-    <a class="botao cheio" href="https://www.instagram.com/midwest_rodeo_band/" target="_blank" rel="noopener">Chamar no Instagram</a>
+    <p>Festivais, casamentos, confraternizações e eventos em Brasília e região.</p>
+    <a class="botao cheio" href="contratar.html">Chamar no WhatsApp</a>
   </section>
 
   <footer>
@@ -438,5 +492,6 @@
     capitulos.forEach((c) => leitor.observe(c));
     mostrarFoto(0);
   </script>
+  <script src="jogo.js"></script>
 </body>
 </html>
