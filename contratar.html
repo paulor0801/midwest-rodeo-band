@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contratar · The Midwest Rodeo Band</title>
+  <meta name="description" content="Peça um orçamento de show da Midwest Rodeo Band pelo WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Oswald:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --noite: #131313;
+      --carvao: #1e1e1e;
+      --campo: #262626;
+      --creme: #f4ede2;
+      --cinza: #a39b90;
+      --ouro: #d9a443;
+      --verde: #25d366;      /* cor do WhatsApp */
+      --verde-escuro: #1da851;
+      --erro: #e0614f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--creme);
+      font-family: 'Lora', Georgia, serif; font-size: 17px; line-height: 1.6;
+      background:
+        linear-gradient(rgba(19,19,19,.88), rgba(19,19,19,.96)),
+        url('fotos/banda-palco.webp') center / cover fixed;
+      background-color: var(--noite);
+    }
+    a { color: inherit; }
+
+    .topo {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 760px; margin: 0 auto; padding: 18px 16px 0;
+    }
+    .topo img { height: 64px; width: auto; display: block; }
+    .voltar {
+      font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px;
+      font-size: 13px; text-decoration: none; color: var(--cinza);
+    }
+    .voltar:hover { color: var(--ouro); }
+
+    main { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+    .rotulo {
+      font-family: 'Oswald', sans-serif; text-transform: uppercase;
+      letter-spacing: 3px; font-size: 13px; color: var(--ouro);
+    }
+    h1 {
+      font-family: 'Abril Fatface', Georgia, serif; font-weight: 400;
+      font-size: clamp(34px, 7vw, 54px); line-height: 1.05; margin: 6px 0 12px;
+    }
+    .intro { color: #d9d1c5; margin: 0 0 28px; }
+
+    form {
+      background: rgba(30,30,30,.92); border-top: 3px solid var(--ouro);
+      padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 18px;
+    }
+    .campo { display: flex; flex-direction: column; gap: 6px; }
+    .campo.inteiro { grid-column: 1 / -1; }
+    label {
+      font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1.5px;
+      font-size: 13px; color: var(--creme);
+    }
+    label .obrig { color: var(--ouro); }
+    label .opc { color: var(--cinza); text-transform: none; letter-spacing: 0; font-family: 'Lora', serif; font-style: italic; }
+    input, select, textarea {
+      width: 100%; font: inherit; font-size: 16px; /* 16px evita o zoom automático no iPhone */
+      color: var(--creme); background: var(--campo);
+      border: 1px solid #3a3a3a; border-radius: 4px; padding: 12px 14px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    input::placeholder, textarea::placeholder { color: #7d766d; }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--ouro); box-shadow: 0 0 0 3px rgba(217,164,67,.2);
+    }
+    input[type="date"], input[type="time"] { color-scheme: dark; min-height: 48px; }
+    select {
+      appearance: none; -webkit-appearance: none; cursor: pointer;
+      background-image: linear-gradient(45deg, transparent 50%, var(--ouro) 50%), linear-gradient(135deg, var(--ouro) 50%, transparent 50%);
+      background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+      background-size: 6px 6px; background-repeat: no-repeat; padding-right: 40px;
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    .linha-dupla { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; }
+    .erro-msg { color: var(--erro); font-size: 14px; min-height: 0; display: none; }
+    .campo.com-erro input, .campo.com-erro select { border-color: var(--erro); }
+    .campo.com-erro .erro-msg { display: block; }
+
+    .enviar {
+      grid-column: 1 / -1; margin-top: 6px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      width: 100%; padding: 16px 20px; border: 0; border-radius: 4px; cursor: pointer;
+      background: var(--verde); color: #0b2e17;
+      font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 18px;
+      text-transform: uppercase; letter-spacing: 2px;
+      transition: background .2s, transform .15s;
+    }
+    .enviar:hover { background: var(--verde-escuro); transform: translateY(-2px); }
+    .enviar svg { width: 26px; height: 26px; flex: none; }
+    .aviso { grid-column: 1 / -1; margin: 0; font-size: 14px; color: var(--cinza); text-align: center; }
+
+    @media (max-width: 640px) {
+      .topo img { height: 52px; }
+      main { padding-top: 16px; }
+      form { grid-template-columns: 1fr; padding: 20px 16px; gap: 18px; }
+      .linha-dupla { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topo">
+    <a href="index.html"><img src="fotos/logo-clara.png" alt="The Midwest Rodeo Band"></a>
+    <a class="voltar" href="index.html">‹ Voltar ao site</a>
+  </header>
+
+  <main>
+    <span class="rotulo">Contrate a banda</span>
+    <h1>Bora fazer um rodeio?</h1>
+    <p class="intro">Conta pra gente sobre o seu evento. Ao clicar em enviar, o seu WhatsApp abre com a mensagem pronta — é só apertar enviar lá.</p>
+
+    <form id="formulario" novalidate>
+      <div class="campo">
+        <label for="nome">Nome <span class="obrig">*</span></label>
+        <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome" required>
+        <span class="erro-msg">Escreva o seu nome.</span>
+      </div>
+
+      <div class="campo">
+        <label for="contratante">Nome do evento / contratante <span class="obrig">*</span></label>
+        <input id="contratante" name="contratante" type="text" placeholder="Ex.: Casamento Ana & Pedro, Festival de Inverno" required>
+        <span class="erro-msg">Escreva o nome do evento ou contratante.</span>
+      </div>
+
+      <div class="campo">
+        <label for="tipo">Tipo de evento <span class="obrig">*</span></label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Escolha…</option>
+          <option>Festival</option>
+          <option>Casamento</option>
+          <option>Confraternização</option>
+          <option>Aniversário</option>
+          <option>Evento corporativo</option>
+          <option>Rodeio / Exposição</option>
+          <option>Outro</option>
+        </select>
+        <span class="erro-msg">Escolha o tipo de evento.</span>
+      </div>
+
+      <div class="campo">
+        <label for="data">Data e horário <span class="obrig">*</span></label>
+        <div class="linha-dupla">
+          <input id="data" name="data" type="date" required aria-label="Data">
+          <input id="hora" name="hora" type="time" aria-label="Horário">
+        </div>
+        <span class="erro-msg">Escolha a data do evento.</span>
+      </div>
+
+      <div class="campo">
+        <label for="local">Cidade ou local <span class="obrig">*</span></label>
+        <input id="local" name="local" type="text" placeholder="Ex.: Brasília – Lago Sul" required>
+        <span class="erro-msg">Escreva a cidade ou o local.</span>
+      </div>
+
+      <div class="campo">
+        <label for="publico">Média de público <span class="opc">(opcional)</span></label>
+        <input id="publico" name="publico" type="text" inputmode="numeric" placeholder="Ex.: 150 pessoas">
+      </div>
+
+      <div class="campo inteiro">
+        <label for="obs">Observações <span class="opc">(opcional)</span></label>
+        <textarea id="obs" name="obs" placeholder="Duração do show, estrutura de som no local…"></textarea>
+      </div>
+
+      <button class="enviar" type="submit">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg>
+        Enviar pelo WhatsApp
+      </button>
+      <p class="aviso">* campos obrigatórios</p>
+    </form>
+  </main>
+
+  <script>
+    // =====================================================
+    // NÚMERO DO WHATSAPP QUE RECEBE OS PEDIDOS
+    // Formato: 55 + DDD + número, só os dígitos.
+    // Exemplo para (61) 99999-8888 → "5561999998888"
+    // =====================================================
+    const NUMERO_WHATSAPP = "5561981717304";
+
+    const form = document.getElementById('formulario');
+    const valor = (id) => document.getElementById(id).value.trim();
+
+    // Some o aviso de erro assim que a pessoa corrige o campo
+    form.addEventListener('input', (e) => {
+      const campo = e.target.closest('.campo');
+      if (campo && e.target.value.trim()) campo.classList.remove('com-erro');
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // 1) Confere os campos obrigatórios
+      let primeiroErro = null;
+      ['nome', 'contratante', 'tipo', 'data', 'local'].forEach((id) => {
+        const campo = document.getElementById(id).closest('.campo');
+        const vazio = !valor(id);
+        campo.classList.toggle('com-erro', vazio);
+        if (vazio && !primeiroErro) primeiroErro = document.getElementById(id);
+      });
+      if (primeiroErro) { primeiroErro.focus(); return; }
+
+      // 2) Data no formato brasileiro (2027-03-15 → 15/03/2027)
+      const [ano, mes, dia] = valor('data').split('-');
+      const quando = `${dia}/${mes}/${ano}` + (valor('hora') ? ` às ${valor('hora')}` : '');
+
+      // 3) Monta a mensagem (os * deixam o texto em negrito no WhatsApp)
+      const linhas = [
+        '🤠 *Pedido de show – Midwest Rodeo Band*',
+        '',
+        `*Nome:* ${valor('nome')}`,
+        `*Evento/Contratante:* ${valor('contratante')}`,
+        `*Tipo de evento:* ${valor('tipo')}`,
+        `*Data e horário:* ${quando}`,
+        `*Cidade/Local:* ${valor('local')}`,
+      ];
+      if (valor('publico')) linhas.push(`*Média de público:* ${valor('publico')}`);
+      if (valor('obs'))     linhas.push(`*Observações:* ${valor('obs')}`);
+
+      // 4) Abre o WhatsApp com a mensagem pronta
+      const link = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(linhas.join('\n'))}`;
+      const aba = window.open(link, '_blank');
+      if (!aba) window.location.href = link; // se o navegador bloquear a aba nova
+    });
+  </script>
+</body>
+</html>
