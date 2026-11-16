@@ -70,9 +70,11 @@
        CAPA: nome grande + foto + 3 cartões por cima
        ========================================================= */
     .capa {
-      position: relative; min-height: 100vh;
-      display: grid; grid-template-columns: 1.1fr 1fr; align-items: center;
-      padding: 110px 6vw 220px; overflow: hidden;
+      position: relative;
+      /* altura da tela, mas nunca mais alta que o vídeo (16:9): assim ele não fica esticado e borrado */
+      min-height: min(100vh, 56.25vw);
+      display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: 1fr auto; align-items: center;
+      padding: 120px 6vw 40px; overflow: hidden;
       background: radial-gradient(ellipse at 70% 40%, #2b2b2b 0%, var(--noite) 65%);
     }
     .capa-texto { position: relative; z-index: 2; }
@@ -84,22 +86,23 @@
     .capa h1 span { display: block; color: var(--ouro); }
     /* Logo grande no lugar do título escrito */
     .capa .logo-capa img {
-      width: min(560px, 100%); height: auto;
+      width: min(400px, 100%); height: auto;   /* era 560px */
       filter: drop-shadow(0 10px 30px rgba(0,0,0,.7));
     }
-    .capa-foto {
-      position: absolute; right: 0; top: 0; bottom: 0; width: 55%;
-      background: url('fotos/johnny.webp') center 25% / cover no-repeat;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 35%);
-              mask-image: linear-gradient(to right, transparent 0%, #000 35%);
-      opacity: .85;
+    /* Vídeo de fundo da capa: sem som, em repetição (videos/trailer-20s.mp4) */
+    .capa-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0;
     }
-    .capa-foto::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(to top, var(--noite) 0%, transparent 45%);
+    /* Camada escura por cima do vídeo, para o logo e os cartões aparecerem bem */
+    .capa::after {
+      content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        linear-gradient(to top, var(--noite) 0%, rgba(19,19,19,.35) 35%, transparent 60%),
+        linear-gradient(to right, rgba(19,19,19,.8) 0%, rgba(19,19,19,.45) 50%, rgba(19,19,19,.25) 100%);
     }
     .cartoes {
-      position: absolute; left: 6vw; right: 6vw; bottom: 40px; z-index: 3;
+      position: relative; z-index: 3; grid-column: 1 / -1; margin-top: 40px;
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
     }
     .cartao {
@@ -197,7 +200,7 @@
     .mesa {
       max-width: 1120px; margin: 50px auto 0; padding: 46px 34px 40px;
       display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-      gap: 34px 26px;
+      gap: 34px 20px;
       /* Parede de tábuas de madeira escura (feita só com CSS, sem imagem) */
       background:
         radial-gradient(ellipse at 50% 0%, rgba(255,200,120,.16), transparent 60%),
@@ -428,8 +431,10 @@
       .menu { padding: 12px 16px; }
       .menu.rolou { padding: 8px 16px; }
       .capa { grid-template-columns: 1fr; padding: 120px 16px 40px; min-height: auto; align-items: end; }
-      .capa-foto { width: 100%; opacity: .45; -webkit-mask-image: none; mask-image: none; }
+      .capa-video { height: 80vh; bottom: auto; }
+      .capa::after { background: linear-gradient(to bottom, rgba(19,19,19,.35) 0, rgba(19,19,19,.6) 50vh, var(--noite) 80vh); }
       .capa-texto { padding-top: 30vh; }
+      .capa .logo-capa img { width: min(300px, 75%); }
       .cartoes { position: static; grid-template-columns: 1fr; margin-top: 40px; gap: 12px; }
       .faixa { padding: 22px 16px; font-size: 15px; }
       .historia { grid-template-columns: 1fr; padding: 70px 16px 120px; }
@@ -439,7 +444,7 @@
       .palco { padding: 40px 16px 80px; }
       .mesa { margin-top: 30px; padding: 30px 10px 26px; gap: 22px 10px; outline-offset: -8px; }
       .polaroid { padding: 4px 4px 0; min-width: 84px; }
-      .polaroid img { height: 95px; margin: 0 auto; }
+      .polaroid img { height: 90px; margin: 0 auto; }
       .polaroid figcaption { font-size: 8.5px; letter-spacing: .5px; padding: 5px 2px 6px; }
       .polaroid::before { width: 11px; height: 11px; top: -5px; }
       .banda { padding: 70px 16px; }
@@ -470,7 +475,10 @@
 
   <!-- ================= CAPA ================= -->
   <section class="capa">
-    <div class="capa-foto" role="img" aria-label="Johnny Colorado no palco"></div>
+    <video class="capa-video" autoplay muted loop playsinline preload="auto" disablepictureinpicture disableremoteplayback
+           poster="fotos/casa-lotada.webp" aria-hidden="true">
+      <source src="videos/trailer-20s.mp4" type="video/mp4">
+    </video>
     <div class="capa-texto">
       <h1 class="logo-capa"><img src="fotos/logo-capa.webp" alt="The Midwest Rodeo Band"></h1>
     </div>
@@ -558,26 +566,28 @@
     <span class="rotulo">Galeria</span>
     <h2 class="titulo">No palco</h2>
     <div class="mesa">
-      <figure class="polaroid p1 revelar"><img src="fotos/banda-palco.webp" alt="A banda e o público"><figcaption>Casa cheia</figcaption></figure>
+      <figure class="polaroid p19 revelar"><img src="fotos/fiddle.webp" alt="Michael Moràn de chapéu branco tocando fiddle"><figcaption>Michael no Fiddle</figcaption></figure>
       <figure class="polaroid p11 alta revelar"><img src="fotos/voz-violao.webp" alt="Johnny Colorado cantando com o violão"><figcaption>Voz e violão</figcaption></figure>
-      <figure class="polaroid p19 revelar"><img src="fotos/fiddle.webp" alt="Violinista de chapéu branco tocando fiddle"><figcaption>Fiddle</figcaption></figure>
-      <figure class="polaroid p6 revelar"><img src="fotos/show-noite.webp" alt="A banda tocando à noite na beira do lago"><figcaption>Show beira lago</figcaption></figure>
-      <figure class="polaroid p27 revelar"><img src="fotos/solo-fiddle.webp" alt="Violinista de chapéu de palha tocando fiddle, com o telão da banda ao fundo"><figcaption>Solo de fiddle</figcaption></figure>
-      <figure class="polaroid p18 revelar"><img src="fotos/bateria.webp" alt="Baterista tocando em meio à fumaça azul"><figcaption>Bateria</figcaption></figure>
-      <figure class="polaroid p12 revelar"><img src="fotos/plateia.webp" alt="Moça de chapéu branco assistindo ao show"><figcaption>Plateia</figcaption></figure>
-      <figure class="polaroid p24 revelar"><img src="fotos/cartaz.webp" alt="Cartaz ilustrado do show da banda"><figcaption>Cartaz</figcaption></figure>
-      <figure class="polaroid p7 alta revelar"><img src="fotos/guitarra-palco.webp" alt="Guitarrista no palco"><figcaption>Guitarra</figcaption></figure>
-      <figure class="polaroid p15 revelar"><img src="fotos/contrabaixo.webp" alt="Baixista tocando no palco, em preto e branco"><figcaption>Contrabaixo</figcaption></figure>
-      <figure class="polaroid p5 revelar"><img src="fotos/show-logo.webp" alt="Violino e voz no palco"><figcaption>Violino e voz</figcaption></figure>
-      <figure class="polaroid p22 revelar"><img src="fotos/brasil-eua.webp" alt="Dançarinas e a banda no palco com as bandeiras do Brasil e dos Estados Unidos"><figcaption>Brasil &amp; EUA</figcaption></figure>
-      <figure class="polaroid p17 revelar"><img src="fotos/luz-azul.webp" alt="Violão e fiddle sob um facho de luz azul"><figcaption>Neon Moon</figcaption></figure>
-      <figure class="polaroid p26 revelar"><img src="fotos/baixo-e-voz.webp" alt="Baixista cantando com o baixo branco"><figcaption>Baixo e voz</figcaption></figure>
-      <figure class="polaroid p8 revelar"><img src="fotos/show-saloon.webp" alt="A banda tocando ao vivo em transmissão de TV"><figcaption>Transmissão</figcaption></figure>
-      <figure class="polaroid p9 revelar"><img src="fotos/encontro.webp" alt="Johnny Colorado recebendo um beijo no rosto no palco"><figcaption>Encontro especial</figcaption></figure>
+      <figure class="polaroid p1 revelar"><img src="fotos/banda-palco.webp" alt="A banda e o público"><figcaption>Casa cheia</figcaption></figure>
       <figure class="polaroid p23 revelar"><img src="fotos/4th-of-july.webp" alt="Dois homens no painel de 4 de Julho no show da Embaixada dos Estados Unidos"><figcaption>Show Embaixada dos EUA</figcaption></figure>
+      <figure class="polaroid p15 revelar"><img src="fotos/contrabaixo.webp" alt="Bobby Dazzler tocando baixo no palco, em preto e branco"><figcaption>Bob no Baixo</figcaption></figure>
+      <figure class="polaroid p8 revelar"><img src="fotos/show-saloon.webp" alt="A banda tocando ao vivo em transmissão de TV"><figcaption>Transmissão</figcaption></figure>
+      <figure class="polaroid p27 revelar"><img src="fotos/solo-fiddle.webp" alt="Violinista de chapéu de palha tocando fiddle, com o telão da banda ao fundo"><figcaption>Solo de fiddle</figcaption></figure>
+      <figure class="polaroid p12 revelar"><img src="fotos/plateia.webp" alt="Moça de chapéu branco assistindo ao show"><figcaption>Plateia</figcaption></figure>
       <figure class="polaroid p21 revelar"><img src="fotos/ao-vivo-tv.webp" alt="Baixista tocando para o público em transmissão de TV"><figcaption>Ao vivo na TV</figcaption></figure>
-      <figure class="polaroid p25 revelar"><img src="fotos/camiseta-banda.webp" alt="Homem de boné e camiseta da banda"><figcaption>Camiseta</figcaption></figure>
+      <figure class="polaroid p18 revelar"><img src="fotos/bateria.webp" alt="Sérgio Agnes tocando bateria em meio à fumaça azul"><figcaption>Sérgio na Bateria</figcaption></figure>
+      <figure class="polaroid p7 alta revelar"><img src="fotos/guitarra-palco.webp" alt="Paulo Leão tocando guitarra no palco"><figcaption>Paulo na Guitarra</figcaption></figure>
+      <figure class="polaroid p22 revelar"><img src="fotos/brasil-eua.webp" alt="Dançarinas e a banda no palco com as bandeiras do Brasil e dos Estados Unidos"><figcaption>Brasil &amp; EUA</figcaption></figure>
+      <figure class="polaroid p24 revelar"><img src="fotos/cartaz.webp" alt="Cartaz ilustrado do show da banda"><figcaption>Cartaz de Eventos</figcaption></figure>
+      <figure class="polaroid p26 revelar"><img src="fotos/baixo-e-voz.webp" alt="Baixista cantando com o baixo branco"><figcaption>Baixo e voz</figcaption></figure>
+      <figure class="polaroid p6 revelar"><img src="fotos/show-noite.webp" alt="A banda tocando à noite na beira do lago"><figcaption>Show beira lago</figcaption></figure>
+      <figure class="polaroid p28 revelar"><img src="fotos/guitarra-country.webp" alt="Guitarrista de chapéu preto tocando guitarra sob luz vermelha"><figcaption>Guitarra Country</figcaption></figure>
+      <figure class="polaroid p30 revelar"><img src="fotos/embaixada-eua.webp" alt="A banda e convidados em frente ao palco, com as bandeiras do Brasil e dos Estados Unidos"><figcaption>Embaixada dos EUA</figcaption></figure>
       <figure class="polaroid p10 revelar"><img src="fotos/bastidores.webp" alt="A banda com a comitiva"><figcaption>Comitiva</figcaption></figure>
+      <figure class="polaroid p5 revelar"><img src="fotos/show-logo.webp" alt="Violino e voz no palco"><figcaption>Violino e voz</figcaption></figure>
+      <figure class="polaroid p29 revelar"><img src="fotos/train-beat.webp" alt="Baterista de chapéu e óculos tocando bateria no palco"><figcaption>Train Beat</figcaption></figure>
+      <figure class="polaroid p17 revelar"><img src="fotos/luz-azul.webp" alt="Violão e fiddle sob um facho de luz azul"><figcaption>Neon Moon</figcaption></figure>
+      <figure class="polaroid p25 revelar"><img src="fotos/camiseta-banda.webp" alt="Boné e camiseta da banda Mid West"><figcaption>Produtos Mid&nbsp;West</figcaption></figure>
       <figure class="polaroid p14 alta revelar"><img src="fotos/palco-wanted.webp" alt="A banda no palco com o case Wanted em primeiro plano"><figcaption>Wanted</figcaption></figure>
     </div>
     <div class="ampliada" id="ampliada" role="dialog" aria-modal="true" aria-label="Foto ampliada">
@@ -712,6 +722,19 @@
       });
     });
     ampliada.addEventListener('click', fecharFoto);
+
+    // 5) Vídeo da capa: pausa quando sai da tela (economiza bateria do celular)
+    //    e fica parado para quem ativou "reduzir movimento" no aparelho
+    const videoCapa = document.querySelector('.capa-video');
+    if (videoCapa) {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        videoCapa.removeAttribute('autoplay'); videoCapa.pause();
+      } else {
+        new IntersectionObserver(([item]) => {
+          if (item.isIntersecting) videoCapa.play().catch(() => {}); else videoCapa.pause();
+        }).observe(videoCapa);
+      }
+    }
     addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharFoto(); });
   </script>
   <script src="jogo.js"></script>
