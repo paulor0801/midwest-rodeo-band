@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A banda · The Midwest Rodeo Band</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Oswald:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --noite: #131313;
+      --carvao: #1e1e1e;
+      --creme: #f4ede2;
+      --cinza: #a39b90;
+      --ouro: #d9a443;
+      --vermelho: #b8322a;
+      --vermelho-escuro: #962820;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--creme);
+      font-family: 'Lora', Georgia, serif; font-size: 17px; line-height: 1.7;
+      background:
+        linear-gradient(rgba(19,19,19,.9), rgba(19,19,19,.97)),
+        url('fotos/banda-palco.webp') center / cover fixed;
+      background-color: var(--noite);
+    }
+    a { color: inherit; }
+
+    .topo {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1040px; margin: 0 auto; padding: 18px 16px 0;
+    }
+    .topo img { height: 64px; width: auto; display: block; }
+    .voltar {
+      font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px;
+      font-size: 13px; text-decoration: none; color: var(--cinza);
+    }
+    .voltar:hover { color: var(--ouro); }
+
+    main {
+      max-width: 1040px; margin: 0 auto; padding: 40px 16px 50px;
+      display: grid; grid-template-columns: 380px 1fr; gap: 50px; align-items: start;
+    }
+    .retrato {
+      background: #fff; padding: 10px 10px 14px; transform: rotate(-2deg);
+      box-shadow: 0 20px 50px rgba(0,0,0,.5); position: sticky; top: 30px;
+    }
+    .retrato img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+
+    .rotulo {
+      font-family: 'Oswald', sans-serif; text-transform: uppercase;
+      letter-spacing: 3px; font-size: 13px; color: var(--ouro);
+    }
+    h1 {
+      font-family: 'Abril Fatface', Georgia, serif; font-weight: 400;
+      font-size: clamp(38px, 6vw, 60px); line-height: 1.05; margin: 6px 0 24px;
+    }
+    .texto p { margin: 0 0 18px; color: #e3dbcf; }
+
+    .instagram {
+      display: inline-flex; align-items: center; gap: 10px; margin-top: 12px;
+      background: var(--vermelho); color: #fff; text-decoration: none;
+      font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 16px;
+      text-transform: uppercase; letter-spacing: 2px;
+      padding: 14px 26px; border-radius: 3px;
+      transition: background .2s, transform .15s;
+    }
+    .instagram:hover { background: var(--vermelho-escuro); transform: translateY(-2px); }
+    .instagram svg { width: 20px; height: 20px; }
+
+    /* Os outros integrantes, para passear entre eles */
+    .outros {
+      max-width: 1040px; margin: 0 auto; padding: 0 16px 60px;
+      border-top: 1px solid #333;
+    }
+    .outros h2 {
+      font-family: 'Oswald', sans-serif; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 3px; font-size: 14px; color: var(--cinza); margin: 30px 0 16px;
+    }
+    .lista { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .lista a { text-decoration: none; display: block; }
+    .lista img {
+      width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+      filter: grayscale(.7); transition: filter .3s;
+    }
+    .lista a:hover img { filter: grayscale(0); }
+    .lista span {
+      display: block; margin-top: 8px; font-family: 'Oswald', sans-serif;
+      text-transform: uppercase; letter-spacing: 1px; font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      .topo img { height: 52px; }
+      main { grid-template-columns: 1fr; gap: 30px; padding-top: 24px; }
+      .retrato { position: static; max-width: 320px; margin: 0 auto; }
+      .instagram { display: flex; justify-content: center; }
+      .lista { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topo">
+    <a href="index.html"><img src="fotos/logo-clara.png" alt="The Midwest Rodeo Band"></a>
+    <a class="voltar" href="index.html#banda">‹ Voltar para a banda</a>
+  </header>
+
+  <main>
+    <figure class="retrato" style="margin:0"><img id="foto" src="" alt=""></figure>
+    <div class="texto">
+      <span class="rotulo" id="funcao"></span>
+      <h1 id="nome"></h1>
+      <div id="bio"></div>
+      <a class="instagram" id="insta" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        Instagram
+      </a>
+    </div>
+  </main>
+
+  <section class="outros">
+    <h2>Conheça também</h2>
+    <div class="lista" id="lista"></div>
+  </section>
+
+  <script>
+    // =====================================================
+    // TEXTOS DOS INTEGRANTES
+    // Para mudar algo, é só editar aqui. Cada parágrafo
+    // é um item entre aspas dentro de "bio".
+    // =====================================================
+    const INTEGRANTES = {
+      johnny: {
+        nome: 'Johnny Colorado',
+        funcao: 'Vocais e violão',
+        foto: 'fotos/johnny.webp',
+        instagram: 'https://www.instagram.com/johnny_collorado/',
+        bio: [
+          'Johnny é o fundador do projeto. Gestor comercial, produtor artístico, empreendedor e veterano da reserva do Exército, ele é natural de Brasília-DF.',
+          'Durante a pandemia, quase desistiu da música e ficou cinco anos longe dos palcos. Mas atendeu ao chamado da música e deu início ao projeto ao lado de Michael Moràn.',
+        ],
+      },
+      michael: {
+        nome: 'Michael Moràn',
+        funcao: 'Fiddle e vocais',
+        foto: 'fotos/michael.webp',
+        instagram: 'https://www.instagram.com/michaelmoranlopez/',
+        bio: [
+          'Michael foi o primeiro convidado a integrar o projeto e sempre incentivou Johnny a investir na música.',
+          'Natural de Guayaquil, no Equador, dedica-se integralmente à música desde os 8 anos de idade. Já integrou a banda do renomado pianista e compositor Richard Clayderman.',
+          'É o maestro da banda, responsável por orquestrar os jogos de vozes. Divide o seu tempo com o Coral da UnB, premiado com medalha de ouro no campeonato mundial de corais em Portugal, em 2025.',
+        ],
+      },
+      bobby: {
+        nome: 'Bobby Dazzler',
+        funcao: 'Contrabaixo e vocais',
+        foto: 'fotos/bob.webp',
+        instagram: 'https://www.instagram.com/bobbydazzlerbsb/',
+        bio: [
+          'Bobby foi o próximo a ser convidado para o projeto e também ajuda Johnny na produção artística da banda.',
+          'É natural de Keiser, no condado de Mississippi, interior do Arkansas, nos Estados Unidos. Arquiteto, já foi membro do coral do lendário Carnegie Hall, em Nova York, época em que sobreviveu ao 11 de setembro.',
+          'Hoje Bobby também integra o premiado Coral da UnB, ao lado de Michael.',
+        ],
+      },
+      sergio: {
+        nome: 'Sérgio Agnes',
+        funcao: 'Bateria e vocais',
+        foto: 'fotos/sergio.webp',
+        instagram: 'https://www.instagram.com/sergio.jag/',
+        bio: [
+          'Sérgio foi o membro seguinte a ser convidado para a banda. Piloto de helicóptero, piloto agrícola, produtor rural e multi-instrumentista, é natural de Selbach-RS.',
+          'Amigo de infância de Johnny, fundou com ele a extinta Colorado Hills Band, que já trazia a semente do que viria a ser a The Midwest Rodeo Band.',
+          'Também cuida da produção musical e instrumental da banda.',
+        ],
+      },
+      paulo: {
+        nome: 'Paulo Leão',
+        funcao: 'Guitarra e vocais',
+        foto: 'fotos/paulo.webp',
+        instagram: 'https://www.instagram.com/leao_mf/',
+        bio: [
+          'Paulo é o membro mais recente. Economista e analista de mercado financeiro, é natural de Brasília-DF e toca guitarra há mais de 20 anos. Também integrou a Colorado Hills Band.',
+          'Hoje é responsável pela organização e pela produção musical da banda, ao lado de Sérgio Agnes.',
+        ],
+      },
+    };
+
+    // Descobre qual integrante mostrar pelo endereço: integrante.html?m=johnny
+    const chave = new URLSearchParams(location.search).get('m');
+    const id = INTEGRANTES[chave] ? chave : 'johnny';
+    const m = INTEGRANTES[id];
+
+    document.title = `${m.nome} · The Midwest Rodeo Band`;
+    document.getElementById('nome').textContent = m.nome;
+    document.getElementById('funcao').textContent = m.funcao;
+    const foto = document.getElementById('foto');
+    foto.src = m.foto; foto.alt = m.nome;
+    document.getElementById('insta').href = m.instagram;
+    const bio = document.getElementById('bio');
+    m.bio.forEach((t) => { const p = document.createElement('p'); p.textContent = t; bio.appendChild(p); });
+
+    // Os outros quatro, embaixo
+    const lista = document.getElementById('lista');
+    Object.entries(INTEGRANTES).filter(([k]) => k !== id).forEach(([k, o]) => {
+      const a = document.createElement('a');
+      a.href = `integrante.html?m=${k}`;
+      a.innerHTML = `<img src="${o.foto}" alt=""><span></span>`;
+      a.querySelector('span').textContent = o.nome;
+      lista.appendChild(a);
+    });
+  </script>
+</body>
+</html>

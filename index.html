@@ -59,6 +59,7 @@
       font-size: 14px; text-decoration: none; color: var(--creme);
     }
     .menu nav a:hover { color: var(--ouro); }
+    .botoes-topo { display: flex; gap: 10px; }
     .faixa-topo {
       display: inline-block; background: var(--vermelho); color: #fff;
       font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px;
@@ -189,25 +190,76 @@
     }
     .palco h2 { font-size: clamp(38px, 5vw, 60px); margin: 50px 0 10px; text-align: center; }
     .palco .rotulo { display: block; text-align: center; color: var(--vermelho); }
+    /* Galeria em forma de MURAL: uma parede de tábuas escuras com um filete dourado,
+       e as fotos presas com tachinhas. Todas têm a mesma altura e ficam
+       inteiras (sem corte); as fotos em pé ficam naturalmente mais estreitas.
+       Clicando, a foto abre grande (veja .ampliada mais abaixo). */
     .mesa {
-      position: relative; max-width: 1100px; margin: 60px auto 0;
-      display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 60px;
+      max-width: 1120px; margin: 50px auto 0; padding: 46px 34px 40px;
+      display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+      gap: 34px 26px;
+      /* Parede de tábuas de madeira escura (feita só com CSS, sem imagem) */
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255,200,120,.16), transparent 60%),
+        linear-gradient(90deg, rgba(0,0,0,.55) 0 2px, rgba(255,255,255,.04) 2px 3px, transparent 3px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 6px, rgba(0,0,0,.05) 6px 7px, transparent 7px 11px),
+        linear-gradient(90deg, #3b2718 0 20%, #31200f 20% 40%, #3d2a1a 40% 60%, #2c1c10 60% 80%, #372415 80% 100%);
+      background-size: 100% 100%, 170px 100%, 100% 100%, 850px 100%;
+      border-radius: 6px;
+      outline: 1px solid rgba(217,164,67,.4); outline-offset: -14px;
+      box-shadow: inset 0 0 70px rgba(0,0,0,.65), 0 24px 50px rgba(0,0,0,.35);
     }
     .polaroid {
-      background: #fff; padding: 10px 10px 40px; box-shadow: 0 18px 40px rgba(0,0,0,.25);
-      position: relative; transition: transform .35s, box-shadow .35s, opacity .8s;
+      --giro: 0deg; --y: 0px;
+      background: #fff; padding: 8px 8px 0; margin: 0;
+      box-shadow: 0 10px 18px rgba(0,0,0,.35);
+      position: relative; cursor: zoom-in;
+      transform: translateY(var(--y)) rotate(var(--giro));
+      transition: transform .35s, box-shadow .35s, opacity .8s, translate .8s;
     }
-    .polaroid img { width: 100%; height: 100%; object-fit: cover; }
+    .polaroid { min-width: 112px; }
+    .polaroid img { height: 160px; width: auto; display: block; margin: 0 auto; }
+    /* Tachinha vermelha no alto de cada foto */
+    .polaroid::before {
+      content: ''; position: absolute; top: -8px; left: 50%; z-index: 2;
+      width: 16px; height: 16px; border-radius: 50%; translate: -50% 0;
+      background: radial-gradient(circle at 35% 35%, #ff7a6b, var(--vermelho) 55%, #5e140f);
+      box-shadow: 0 4px 5px rgba(0,0,0,.45);
+    }
+    /* A legenda nunca alarga a polaroid: se for comprida, passa para uma segunda linha */
     .polaroid figcaption {
-      position: absolute; left: 0; right: 0; bottom: 8px; text-align: center;
-      font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; color: #555;
+      width: 0; min-width: 100%; padding: 8px 4px 9px; text-align: center; line-height: 1.25;
+      font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 11px; color: #555;
     }
-    .polaroid:hover { transform: rotate(0deg) scale(1.04) !important; z-index: 10; box-shadow: 0 30px 60px rgba(0,0,0,.35); }
-    .p1 { grid-column: 1 / 7;  grid-row: 1 / 7;  transform: rotate(-4deg); }
-    .p2 { grid-column: 6 / 10; grid-row: 2 / 8;  transform: rotate(3deg); z-index: 2; }
-    .p3 { grid-column: 9 / 13; grid-row: 1 / 6;  transform: rotate(-2deg); }
-    .p4 { grid-column: 2 / 6;  grid-row: 7 / 12; transform: rotate(2.5deg); }
-    .p5 { grid-column: 6 / 13; grid-row: 7 / 13; transform: rotate(-1.5deg); }
+    .polaroid:hover { transform: translateY(var(--y)) rotate(0deg) scale(1.1); z-index: 10; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+    .polaroid:nth-child(5n+1) { --giro: -3deg;  --y: 4px; }
+    .polaroid:nth-child(5n+2) { --giro: 2deg;   --y: -6px; }
+    .polaroid:nth-child(5n+3) { --giro: -1.5deg; --y: 6px; }
+    .polaroid:nth-child(5n+4) { --giro: 3deg;   --y: -3px; }
+    .polaroid:nth-child(5n+5) { --giro: -2deg;  --y: 2px; }
+
+    /* Foto ampliada (abre ao clicar numa polaroid) */
+    .ampliada {
+      position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px; padding: 20px;
+      background: rgba(10,10,10,.9); cursor: zoom-out;
+      opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s;
+    }
+    .ampliada.aberta { opacity: 1; visibility: visible; }
+    .ampliada img {
+      max-width: min(1100px, 100%); max-height: calc(100vh - 110px); width: auto; height: auto;
+      background: #fff; padding: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.6);
+      transform: scale(.92); transition: transform .25s;
+    }
+    .ampliada.aberta img { transform: scale(1); }
+    .ampliada p {
+      margin: 0; color: var(--papel); font-family: 'Oswald', sans-serif;
+      text-transform: uppercase; letter-spacing: 3px; font-size: 14px;
+    }
+    .ampliada button {
+      position: absolute; top: 14px; right: 18px; background: none; border: 0; cursor: pointer;
+      color: #fff; font-size: 40px; line-height: 1; padding: 6px 10px;
+    }
 
     /* =========================================================
        INTEGRANTES
@@ -255,6 +307,9 @@
     }
     .membro h3 { margin: 0; font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 20px; letter-spacing: 1px; }
     .membro p { margin: 0; }
+    .membro { display: block; color: inherit; text-decoration: none; }
+    .membro .ver { display: inline-block; margin-top: 8px; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; color: var(--ouro); }
+    .membro:hover .ver { color: #fff; }
 
     /* =========================================================
        CONTATO + RODAPÉ
@@ -285,6 +340,8 @@
        ========================================================= */
     @media (max-width: 900px) {
       .menu nav { display: none; }
+      .botoes-topo { gap: 8px; }
+      .faixa-topo { padding: 6px 10px; font-size: 12px; letter-spacing: 1.5px; }
       .menu { padding: 12px 16px; }
       .menu.rolou { padding: 8px 16px; }
       .capa { grid-template-columns: 1fr; padding: 120px 16px 40px; min-height: auto; align-items: end; }
@@ -297,8 +354,11 @@
       .capitulo { opacity: 1; }
       .capitulo .foto-celular { display: block; margin: 0 0 20px; border: 6px solid #f4ede2; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
       .palco { padding: 40px 16px 80px; }
-      .mesa { display: flex; flex-direction: column; gap: 28px; }
-      .polaroid img { aspect-ratio: 4 / 3; height: auto; }
+      .mesa { margin-top: 30px; padding: 30px 10px 26px; gap: 22px 10px; outline-offset: -8px; }
+      .polaroid { padding: 4px 4px 0; min-width: 84px; }
+      .polaroid img { height: 95px; margin: 0 auto; }
+      .polaroid figcaption { font-size: 8.5px; letter-spacing: .5px; padding: 5px 2px 6px; }
+      .polaroid::before { width: 11px; height: 11px; top: -5px; }
       .banda { padding: 70px 16px; }
       .integrantes { grid-template-columns: repeat(2, 1fr); }
       .integrantes .membro:last-child { grid-column: span 2; aspect-ratio: 3 / 2; }
@@ -319,7 +379,10 @@
       <a href="#jogo">Jogo</a>
       <a href="#contato">Contato</a>
     </nav>
-    <a class="faixa-topo" href="https://www.instagram.com/midwest_rodeo_band/" target="_blank" rel="noopener">Instagram ›</a>
+    <div class="botoes-topo">
+      <a class="faixa-topo" href="https://www.instagram.com/midwest_rodeo_band/" target="_blank" rel="noopener">Instagram ›</a>
+      <a class="faixa-topo" href="contratar.html">Contato ›</a>
+    </div>
   </header>
 
   <!-- ================= CAPA ================= -->
@@ -333,7 +396,7 @@
       <a class="cartao" href="#historia">
         <span class="rotulo">Quem somos</span>
         <h3>Nossa história</h3>
-        <p>Como cinco músicos de Brasília montaram um rodeio no palco.</p>
+        <p>A banda de country americano de Brasília, reconhecida pela Embaixada dos EUA.</p>
       </a>
       <a class="cartao" href="#palco">
         <span class="rotulo">Fotos</span>
@@ -358,7 +421,7 @@
        Cada <article class="capitulo"> é um bloco de texto.
        O data-foto diz qual foto da pilha aparece na frente
        quando aquele bloco chega no meio da tela.
-       Troque os textos pela história de verdade da banda. -->
+       -->
   <section class="historia" id="historia">
     <div>
       <span class="rotulo">Nossa história</span>
@@ -366,41 +429,42 @@
 
       <article class="capitulo" data-foto="0">
         <span class="rotulo">O começo</span>
-        <h3>Cinco amigos, um gosto em comum</h3>
-        <img class="foto-celular" src="fotos/show-logo.webp" alt="">
-        <p>A Midwest Rodeo Band nasceu em Brasília da vontade de tocar o country e o rock que a gente sempre ouviu: estrada, poeira e guitarra alta.</p>
-        <p><em>Conte aqui como a banda começou: quando, onde e quem chamou quem.</em></p>
+        <h3>Country americano de verdade, nascido em Brasília</h3>
+        <img class="foto-celular" src="fotos/voz-ao-vivo.webp" style="object-position: center 30%" alt="">
+        <p>A Midwest Rodeo Band é talvez a única banda reconhecida pela própria Embaixada dos Estados Unidos como uma verdadeira e tradicional banda de American Country Music.</p>
+        <p>Nascida em Brasília, ela leva o movimento country, presente e pulsante no coração do Brasil, a todo o Centro-Oeste.</p>
       </article>
 
       <article class="capitulo" data-foto="1">
         <span class="rotulo">O som</span>
-        <h3>Violino que chora, guitarra que canta</h3>
-        <img class="foto-celular" src="fotos/violino-guitarra.png" alt="">
-        <p>O violino do Michael e a guitarra do Paulo conversam o show inteiro, enquanto o baixo do Bob e a bateria do Sérgio seguram o galope.</p>
-        <p><em>Fale das influências: quais artistas inspiram vocês?</em></p>
+        <h3>Do Western Swing ao Honky Tonk</h3>
+        <img class="foto-celular" src="fotos/violino-guitarra.png" style="object-position: center 25%" alt="">
+        <p>A banda é dedicada à essência do country americano. O som passeia pelo Western Swing, Texas Country, Honky Tonk, Outlaw Country e Traditional Country.</p>
+        <p>O fiddle do Michael e a guitarra do Paulo conversam o show inteiro, enquanto o baixo do Bobby e a bateria do Sérgio seguram o galope.</p>
       </article>
 
       <article class="capitulo" data-foto="2">
-        <span class="rotulo">A voz</span>
-        <h3>Johnny Colorado na frente do palco</h3>
-        <img class="foto-celular" src="fotos/johnny.webp" alt="">
-        <p>Chapéu na cabeça e microfone antigo na mão, Johnny Colorado puxa o coro e transforma qualquer palco num salão de rodeio.</p>
+        <span class="rotulo">O palco</span>
+        <h3>Um rodeio inteiro em cima do palco</h3>
+        <img class="foto-celular" src="fotos/publico-chapeu.webp" style="object-position: center 30%" alt="">
+        <p>Com Johnny Colorado na voz, a banda recria o clima dos grandes rodeios, honky tonks, saloons e estradas do interior americano.</p>
+        <p>O show junta autenticidade, interação com o público, energia e presença de palco.</p>
       </article>
 
       <article class="capitulo" data-foto="3">
-        <span class="rotulo">Hoje</span>
+        <span class="rotulo">O repertório</span>
         <h3>Casa cheia, chapéu no alto</h3>
-        <img class="foto-celular" src="fotos/banda-palco.webp" alt="">
-        <p>Hoje a banda leva esse som para festivais, casamentos, confraternizações e eventos, com um repertório feito para cantar junto e dançar.</p>
-        <p><em>Cite aqui shows marcantes, festivais e lugares onde vocês já tocaram.</em></p>
+        <img class="foto-celular" src="fotos/casa-lotada.webp" alt="">
+        <p>O repertório traz Alan Jackson, George Strait, Dwight Yoakam, Alabama, Garth Brooks, Brooks &amp; Dunn e muitos outros.</p>
+        <p>É feito para quem é apaixonado por country e também para quem só gosta de música boa, guitarra e fiddle, com o legítimo espírito de estrada e vida no campo.</p>
       </article>
     </div>
 
     <div class="pilha" aria-hidden="true">
-      <img src="fotos/show-logo.webp"       style="--giro:-3deg; object-position: 78% center" alt="">
-      <img src="fotos/violino-guitarra.png" style="--giro:2.5deg" alt="">
-      <img src="fotos/johnny.webp"          style="--giro:-2deg" alt="">
-      <img src="fotos/banda-palco.webp"     style="--giro:3deg" alt="">
+      <img src="fotos/voz-ao-vivo.webp"     style="--giro:-3deg; object-position: 50% 30%" alt="">
+      <img src="fotos/violino-guitarra-alto.webp" style="--giro:2.5deg; background: #000" alt="">
+      <img src="fotos/publico-chapeu.webp"   style="--giro:-2deg; object-position: center 30%" alt="">
+      <img src="fotos/casa-lotada.webp"     style="--giro:3deg; height: auto; aspect-ratio: 4 / 5; max-height: 88%" alt="">
     </div>
   </section>
 
@@ -412,10 +476,31 @@
     <h2 class="titulo">No palco</h2>
     <div class="mesa">
       <figure class="polaroid p1 revelar"><img src="fotos/banda-palco.webp" alt="A banda e o público"><figcaption>Casa cheia</figcaption></figure>
-      <figure class="polaroid p2 revelar"><img src="fotos/michael.webp" alt="Michael no violino"><figcaption>Michael</figcaption></figure>
-      <figure class="polaroid p3 revelar"><img src="fotos/paulo.webp" alt="Paulo Leão na guitarra"><figcaption>Paulo</figcaption></figure>
-      <figure class="polaroid p4 revelar"><img src="fotos/sergio.webp" alt="Sérgio Agnes na bateria"><figcaption>Sérgio</figcaption></figure>
+      <figure class="polaroid p11 alta revelar"><img src="fotos/voz-violao.webp" alt="Johnny Colorado cantando com o violão"><figcaption>Voz e violão</figcaption></figure>
+      <figure class="polaroid p19 revelar"><img src="fotos/fiddle.webp" alt="Violinista de chapéu branco tocando fiddle"><figcaption>Fiddle</figcaption></figure>
+      <figure class="polaroid p6 revelar"><img src="fotos/show-noite.webp" alt="A banda tocando à noite na beira do lago"><figcaption>Show beira lago</figcaption></figure>
+      <figure class="polaroid p27 revelar"><img src="fotos/solo-fiddle.webp" alt="Violinista de chapéu de palha tocando fiddle, com o telão da banda ao fundo"><figcaption>Solo de fiddle</figcaption></figure>
+      <figure class="polaroid p18 revelar"><img src="fotos/bateria.webp" alt="Baterista tocando em meio à fumaça azul"><figcaption>Bateria</figcaption></figure>
+      <figure class="polaroid p12 revelar"><img src="fotos/plateia.webp" alt="Moça de chapéu branco assistindo ao show"><figcaption>Plateia</figcaption></figure>
+      <figure class="polaroid p24 revelar"><img src="fotos/cartaz.webp" alt="Cartaz ilustrado do show da banda"><figcaption>Cartaz</figcaption></figure>
+      <figure class="polaroid p7 alta revelar"><img src="fotos/guitarra-palco.webp" alt="Guitarrista no palco"><figcaption>Guitarra</figcaption></figure>
+      <figure class="polaroid p15 revelar"><img src="fotos/contrabaixo.webp" alt="Baixista tocando no palco, em preto e branco"><figcaption>Contrabaixo</figcaption></figure>
       <figure class="polaroid p5 revelar"><img src="fotos/show-logo.webp" alt="Violino e voz no palco"><figcaption>Violino e voz</figcaption></figure>
+      <figure class="polaroid p22 revelar"><img src="fotos/brasil-eua.webp" alt="Dançarinas e a banda no palco com as bandeiras do Brasil e dos Estados Unidos"><figcaption>Brasil &amp; EUA</figcaption></figure>
+      <figure class="polaroid p17 revelar"><img src="fotos/luz-azul.webp" alt="Violão e fiddle sob um facho de luz azul"><figcaption>Neon Moon</figcaption></figure>
+      <figure class="polaroid p26 revelar"><img src="fotos/baixo-e-voz.webp" alt="Baixista cantando com o baixo branco"><figcaption>Baixo e voz</figcaption></figure>
+      <figure class="polaroid p8 revelar"><img src="fotos/show-saloon.webp" alt="A banda tocando ao vivo em transmissão de TV"><figcaption>Transmissão</figcaption></figure>
+      <figure class="polaroid p9 revelar"><img src="fotos/encontro.webp" alt="Johnny Colorado recebendo um beijo no rosto no palco"><figcaption>Encontro especial</figcaption></figure>
+      <figure class="polaroid p23 revelar"><img src="fotos/4th-of-july.webp" alt="Dois homens no painel de 4 de Julho no show da Embaixada dos Estados Unidos"><figcaption>Show Embaixada dos EUA</figcaption></figure>
+      <figure class="polaroid p21 revelar"><img src="fotos/ao-vivo-tv.webp" alt="Baixista tocando para o público em transmissão de TV"><figcaption>Ao vivo na TV</figcaption></figure>
+      <figure class="polaroid p25 revelar"><img src="fotos/camiseta-banda.webp" alt="Homem de boné e camiseta da banda"><figcaption>Camiseta</figcaption></figure>
+      <figure class="polaroid p10 revelar"><img src="fotos/bastidores.webp" alt="A banda com a comitiva"><figcaption>Comitiva</figcaption></figure>
+      <figure class="polaroid p14 alta revelar"><img src="fotos/palco-wanted.webp" alt="A banda no palco com o case Wanted em primeiro plano"><figcaption>Wanted</figcaption></figure>
+    </div>
+    <div class="ampliada" id="ampliada" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+      <button type="button" aria-label="Fechar">×</button>
+      <img src="" alt="">
+      <p></p>
     </div>
   </section>
 
@@ -428,11 +513,11 @@
     </video>
     <h2 class="titulo revelar">A banda</h2>
     <div class="integrantes">
-      <div class="membro revelar"><img src="fotos/johnny.webp" alt="Johnny Colorado"><div><h3>Johnny Colorado</h3><p class="rotulo">Vocal</p></div></div>
-      <div class="membro revelar"><img src="fotos/paulo.webp" alt="Paulo Leão"><div><h3>Paulo Leão</h3><p class="rotulo">Guitarra</p></div></div>
-      <div class="membro revelar"><img src="fotos/michael.webp" alt="Michael"><div><h3>Michael</h3><p class="rotulo">Violino</p></div></div>
-      <div class="membro revelar"><img src="fotos/bob.webp" alt="Bob"><div><h3>Bob</h3><p class="rotulo">Baixo</p></div></div>
-      <div class="membro revelar"><img src="fotos/sergio.webp" alt="Sérgio Agnes"><div><h3>Sérgio Agnes</h3><p class="rotulo">Bateria</p></div></div>
+      <a class="membro revelar" href="integrante.html?m=johnny"><img src="fotos/johnny.webp" alt="Johnny Colorado"><div><h3>Johnny Colorado</h3><p class="rotulo">Vocais e violão</p><span class="ver">Conheça ›</span></div></a>
+      <a class="membro revelar" href="integrante.html?m=michael"><img src="fotos/michael.webp" alt="Michael Moràn"><div><h3>Michael Moràn</h3><p class="rotulo">Fiddle e vocais</p><span class="ver">Conheça ›</span></div></a>
+      <a class="membro revelar" href="integrante.html?m=bobby"><img src="fotos/bob.webp" alt="Bobby Dazzler"><div><h3>Bobby Dazzler</h3><p class="rotulo">Contrabaixo e vocais</p><span class="ver">Conheça ›</span></div></a>
+      <a class="membro revelar" href="integrante.html?m=sergio"><img src="fotos/sergio.webp" alt="Sérgio Agnes"><div><h3>Sérgio Agnes</h3><p class="rotulo">Bateria e vocais</p><span class="ver">Conheça ›</span></div></a>
+      <a class="membro revelar" href="integrante.html?m=paulo"><img src="fotos/paulo.webp" alt="Paulo Leão"><div><h3>Paulo Leão</h3><p class="rotulo">Guitarra e vocais</p><span class="ver">Conheça ›</span></div></a>
     </div>
   </section>
 
@@ -491,6 +576,23 @@
     }, { rootMargin: '-45% 0px -45% 0px' });
     capitulos.forEach((c) => leitor.observe(c));
     mostrarFoto(0);
+
+    // 4) Galeria "No palco": clicar numa foto abre ela grande.
+    //    Fecha clicando em qualquer lugar ou apertando Esc.
+    const ampliada = document.getElementById('ampliada');
+    function fecharFoto() { ampliada.classList.remove('aberta'); document.body.style.overflow = ''; }
+    document.querySelectorAll('.polaroid').forEach((p) => {
+      p.addEventListener('click', () => {
+        const img = p.querySelector('img');
+        ampliada.querySelector('img').src = img.src;
+        ampliada.querySelector('img').alt = img.alt;
+        ampliada.querySelector('p').textContent = p.querySelector('figcaption').textContent;
+        ampliada.classList.add('aberta');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    ampliada.addEventListener('click', fecharFoto);
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharFoto(); });
   </script>
   <script src="jogo.js"></script>
 </body>
