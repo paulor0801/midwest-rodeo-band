@@ -291,6 +291,89 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* ---------- Ranking do jogo (o código fica no ranking.js) ---------- */
+    .placar { max-width: 900px; margin: 18px auto 0; display: grid; gap: 12px; justify-items: center; }
+    .placar[hidden], .placar-salvar[hidden], .ranking-aviso[hidden] { display: none; }
+    .placar-salvar {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px;
+      font-family: 'Oswald', sans-serif; letter-spacing: 1px; font-size: 18px; color: var(--creme);
+    }
+    .placar-salvar strong { color: var(--ouro); font-weight: 600; }
+    .botao-ranking {
+      font-family: 'Oswald', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 2px;
+      font-size: 14px; color: #fff; background: var(--vermelho); border: 0; border-radius: 3px;
+      padding: 11px 20px; cursor: pointer; transition: background .2s, transform .15s;
+    }
+    .botao-ranking:hover { background: #962820; transform: translateY(-2px); }
+    .botao-ranking:disabled { opacity: .65; cursor: default; transform: none; }
+    .link-ranking {
+      background: none; border: 0; padding: 4px; cursor: pointer; color: var(--cinza);
+      font-family: 'Lora', serif; font-size: 14px; letter-spacing: 0; text-decoration: underline;
+    }
+    .jogo .placar-msg {
+      margin: 0; min-height: 1.5em; color: var(--ouro);
+      font-family: 'Oswald', sans-serif; letter-spacing: 1px; font-size: 16px;
+    }
+    .ranking {
+      width: 100%; max-width: 520px; text-align: left;
+      background: var(--carvao); border: 1px solid rgba(217,164,67,.45); border-radius: 6px;
+      padding: 18px 20px 14px; box-shadow: 0 16px 40px rgba(0,0,0,.4);
+    }
+    .ranking-topo { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin-bottom: 10px; }
+    .ranking h3 { margin: 0; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 18px; color: var(--creme); }
+    .ranking-topo span { font-size: 13px; color: var(--cinza); }
+    .ranking ol { list-style: none; margin: 0; padding: 0; }
+    .ranking li {
+      display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 10px;
+      padding: 9px 4px; border-top: 1px solid rgba(255,255,255,.07);
+      font-family: 'Oswald', sans-serif; font-size: 17px; letter-spacing: 1px;
+    }
+    .ranking li .pos { color: var(--cinza); font-weight: 600; }
+    .ranking li:nth-child(1) .pos { color: #e8c15a; }
+    .ranking li:nth-child(2) .pos { color: #c9ccd1; }
+    .ranking li:nth-child(3) .pos { color: #c98a52; }
+    .ranking li .apelido { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ranking li .pts { color: var(--ouro); font-variant-numeric: tabular-nums; }
+    .ranking li.vago .apelido { color: #5d5750; }
+    .jogo .ranking-aviso { margin: 10px 0 0; font-size: 13px; color: var(--cinza); }
+
+    /* Janela de cadastro do ranking */
+    .cadastro {
+      width: min(460px, calc(100% - 32px)); max-height: calc(100vh - 32px); overflow: auto;
+      padding: 0; border: 0; border-top: 3px solid var(--ouro); border-radius: 6px;
+      background: var(--carvao); color: var(--creme); box-shadow: 0 30px 80px rgba(0,0,0,.6);
+    }
+    .cadastro::backdrop { background: rgba(10,10,10,.82); }
+    .cadastro form { padding: 22px 22px 20px; display: grid; gap: 14px; text-align: left; }
+    .cadastro h3 { margin: 0; font-family: 'Abril Fatface', Georgia, serif; font-weight: 400; font-size: 28px; line-height: 1.1; }
+    .cadastro p { margin: 0; color: #d9d1c5; font-size: 15px; line-height: 1.5; }
+    .cadastro p strong { color: var(--ouro); }
+    .cadastro label {
+      display: grid; gap: 6px; font-family: 'Oswald', sans-serif; text-transform: uppercase;
+      letter-spacing: 1.5px; font-size: 13px; color: var(--creme);
+    }
+    .cadastro label small { font-family: 'Lora', serif; font-style: italic; text-transform: none; letter-spacing: 0; color: var(--cinza); font-size: 13px; }
+    .cadastro input[type="text"], .cadastro input[type="email"], .cadastro input[type="tel"] {
+      width: 100%; font-family: 'Lora', serif; font-size: 16px; text-transform: none; letter-spacing: 0;
+      color: var(--creme); background: #262626; border: 1px solid #3a3a3a; border-radius: 4px; padding: 11px 12px;
+    }
+    .cadastro input:focus { outline: none; border-color: var(--ouro); box-shadow: 0 0 0 3px rgba(217,164,67,.2); }
+    .cadastro .marcar {
+      display: flex; gap: 10px; align-items: flex-start; font-family: 'Lora', serif;
+      text-transform: none; letter-spacing: 0; font-size: 14px; line-height: 1.45;
+    }
+    .cadastro .marcar input { width: 18px; height: 18px; margin: 2px 0 0; flex: none; accent-color: var(--ouro); }
+    .cadastro .privacidade { font-size: 13px; color: var(--cinza); }
+    .cadastro .erro { color: #e0614f; font-size: 14px; }
+    .cadastro .erro:empty { display: none; }
+    /* No PC: [Cancelar] [Salvar]. No celular o Salvar vem primeiro, na largura toda */
+    .cadastro .acoes { display: flex; flex-direction: row-reverse; flex-wrap: wrap; gap: 10px; }
+    .cadastro .acoes > * { flex: 1 1 auto; }
+    .cadastro .cancelar {
+      background: none; border: 1px solid #555; border-radius: 3px; color: var(--creme); cursor: pointer;
+      font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; padding: 11px 18px;
+    }
+
     /* Espaço com estrelas entre "A banda" e o contato */
     .separador {
       text-align: center; padding: 40px 0; color: var(--ouro);
@@ -525,8 +608,45 @@
   <section class="jogo" id="jogo">
     <span class="rotulo">Intervalo do show</span>
     <h2 class="titulo">Chapéu Saltador</h2>
-    <p>Pule os fardos, barris e bolas de feno e pegue as estrelas. Quanto mais longe, mais rápido!</p>
+    <p>Pule os fardos, barris e bolas de feno e pegue as estrelas. Faça a maior pontuação e entre no Top 5 da temporada!</p>
     <canvas id="jogo-canvas" aria-label="Jogo Chapéu Saltador: toque ou aperte espaço para pular"></canvas>
+
+    <!-- Ranking: Top 5 da temporada (o código fica no ranking.js) -->
+    <div class="placar" id="placar">
+      <div class="placar-salvar" id="ranking-salvar" hidden>
+        <span>Você fez <strong id="ranking-pontos">0</strong> pontos!</span>
+        <button type="button" class="botao-ranking" id="ranking-botao">Salvar no ranking</button>
+        <button type="button" class="link-ranking" id="ranking-trocar" hidden>não é você?</button>
+      </div>
+      <p class="placar-msg" id="ranking-msg" role="status"></p>
+      <div class="ranking">
+        <div class="ranking-topo">
+          <h3>🏆 Top 5</h3>
+          <span id="ranking-temporada">Carregando o ranking…</span>
+        </div>
+        <ol id="ranking-lista"></ol>
+        <p class="ranking-aviso" id="ranking-aviso" hidden>🔧 Modo de teste: o ranking ainda não está ligado à planilha e só aparece neste navegador.</p>
+      </div>
+    </div>
+
+    <dialog class="cadastro" id="ranking-cadastro" aria-labelledby="cadastro-titulo">
+      <form id="ranking-form" novalidate>
+        <h3 id="cadastro-titulo">Entrar no ranking</h3>
+        <p>Você fez <strong data-pontos>0</strong> pontos. Faça seu cadastro para aparecer no Top 5 da temporada.</p>
+        <label>Nome <input type="text" name="nome" autocomplete="name" maxlength="60"></label>
+        <label>Apelido <small>(é o que aparece no ranking)</small> <input type="text" name="apelido" maxlength="15" autocomplete="nickname"></label>
+        <label>E-mail <input type="email" name="email" autocomplete="email" maxlength="120"></label>
+        <label>Telefone / WhatsApp <input type="tel" name="telefone" inputmode="tel" autocomplete="tel" placeholder="(61) 99999-9999" maxlength="20"></label>
+        <label class="marcar"><input type="checkbox" name="aceite"> Concordo que a banda guarde meus dados para falar comigo sobre o ranking.</label>
+        <label class="marcar"><input type="checkbox" name="novidades"> Quero receber novidades e a agenda de shows.</label>
+        <p class="privacidade">O ranking mostra só o seu apelido. Nome, e-mail e telefone ficam só com a banda e não aparecem no site. Para apagar seus dados, fale com a gente no Instagram.</p>
+        <p class="erro" id="ranking-erro" role="alert"></p>
+        <div class="acoes">
+          <button type="submit" class="botao-ranking">Salvar pontuação</button>
+          <button type="button" class="cancelar" id="ranking-cancelar">Cancelar</button>
+        </div>
+      </form>
+    </dialog>
   </section>
 
   <div class="separador" aria-hidden="true">★ ★ ★</div>
@@ -595,5 +715,6 @@
     addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharFoto(); });
   </script>
   <script src="jogo.js"></script>
+  <script src="ranking.js"></script>
 </body>
 </html>

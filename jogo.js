@@ -15,14 +15,16 @@
   // ---------- ajustes do jogo (pode mexer!) ----------
   const GRAVIDADE = 2300;
   const PULO = -780;
-  const VELOCIDADE_INICIAL = 300;
-  const VELOCIDADE_MAXIMA = 760;
-  const ACELERACAO = 9;          // quanto a velocidade aumenta por segundo
+  const VELOCIDADE_INICIAL = 360;   // era 300: já começa mais rápido
+  const VELOCIDADE_MAXIMA = 860;    // era 760
+  const ACELERACAO = 14;            // era 9: acelera mais depressa (quanto a velocidade aumenta por segundo)
+  const ESPACO_MINIMO = 0.65;       // era 0.75: obstáculos mais juntos (quanto menor, mais difícil)
+  const CHANCE_FARDO_DUPLO = 0.4;   // era 0.3: mais fardos duplos
   // ---------------------------------------------------
 
   let estado = 'pronto';          // pronto | jogando | fim
   let visivel = false, segurando = false;
-  let velocidade, pontos, obstaculos, estrelas, distanciaProx, deslocamento, tempoFim;
+  let velocidade, pontos, obstaculos, estrelas, distanciaProx, deslocamento, tempoFim, tempoInicio = 0;
   const chapeu = { x: 90, y: 0, vy: 0, giro: 0, noChao: true, w: 58, h: 30 };
 
   let recorde = 0;
@@ -52,9 +54,13 @@
   }
 
   // ---------- comandos ----------
+  function comecar() {
+    reiniciar(); estado = 'jogando'; tempoInicio = performance.now();
+    dispatchEvent(new CustomEvent('chapeu:inicio'));   // o ranking (ranking.js) fica sabendo
+  }
   function apertar() {
-    if (estado === 'pronto') { reiniciar(); estado = 'jogando'; }
-    else if (estado === 'fim') { if (performance.now() - tempoFim < 400) return; reiniciar(); estado = 'jogando'; }
+    if (estado === 'pronto') comecar();
+    else if (estado === 'fim') { if (performance.now() - tempoFim < 400) return; comecar(); }
     segurando = true;
     if (chapeu.noChao) { chapeu.vy = PULO; chapeu.noChao = false; }
   }
@@ -68,6 +74,9 @@
   canvas.addEventListener('pointercancel', soltar);
   addEventListener('keydown', (e) => {
     if (!visivel || !(e.code === 'Space' || e.code === 'ArrowUp')) return;
+    // não pula enquanto a pessoa digita no cadastro do ranking
+    if (document.querySelector('dialog[open]')) return;
+    if (e.target.closest && e.target.closest('input, textarea, select, [contenteditable]')) return;
     e.preventDefault();             // não deixa a página rolar
     if (!e.repeat) apertar();
   });
@@ -89,12 +98,12 @@
     o.y = CHAO - o.h;
     obstaculos.push(o);
     // às vezes um fardo duplo
-    if (tipo === 'fardo' && velocidade > 420 && Math.random() < 0.3) {
+    if (tipo === 'fardo' && velocidade > 400 && Math.random() < CHANCE_FARDO_DUPLO) {
       obstaculos.push({ tipo: 'fardo', x: o.x + 44, w: 46, h: 34, y: CHAO - 34 });
     }
     // às vezes uma estrela no ar, depois do obstáculo
     if (Math.random() < 0.45) estrelas.push({ x: o.x + 150 + Math.random() * 80, y: CHAO - 95 - Math.random() * 35, pega: false });
-    distanciaProx = velocidade * (0.75 + Math.random() * 0.75) + 120;
+    distanciaProx = velocidade * (ESPACO_MINIMO + Math.random() * ESPACO_MINIMO) + 100;
   }
 
   function bateu(a, b) {
@@ -143,6 +152,10 @@
       recorde = Math.floor(pontos);
       try { localStorage.setItem('chapeu-recorde', recorde); } catch (e) {}
     }
+    // avisa o ranking (ranking.js) quantos pontos a pessoa fez e quanto tempo jogou
+    dispatchEvent(new CustomEvent('chapeu:fim', {
+      detail: { pontos: Math.floor(pontos), segundos: Math.round((tempoFim - tempoInicio) / 1000) },
+    }));
   }
 
   // ---------- desenhos ----------
